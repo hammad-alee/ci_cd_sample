@@ -17,18 +17,33 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      
+      # Cache Flutter SDK
+      - name: Cache Flutter SDK
+        id: flutter-cache
+        uses: actions/cache@v3
+        with:
+          path: /opt/hostedtoolcache/flutter
+          key: flutter-${{ runner.os }}-stable-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            flutter-${{ runner.os }}-stable-
 
-      # Note: This workflow uses the latest stable version of the Dart SDK.
-      # You can specify other versions if desired, see documentation here:
-      # https://github.com/dart-lang/setup-dart/blob/main/README.md
-      # - uses: dart-lang/setup-dart@v1
-      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
-      # Set up Flutter SDK
+     # Set up Flutter SDK (only if cache is not found)
       - name: Set up Flutter
+        if: steps.flutter-cache.outputs.cache-hit != 'true'
         uses: subosito/flutter-action@v2
         with:
           channel: stable  # Use the stable channel for Flutter
 
+          # Cache Dart dependencies
+      - name: Cache Dart dependencies
+        id: dart-cache
+        uses: actions/cache@v3
+        with:
+          path: .dart_tool
+          key: dart-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            dart-${{ runner.os }}-
       - name: Clean dependencies
         run: flutter clean
 

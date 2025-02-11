@@ -35,15 +35,7 @@ jobs:
         with:
           channel: stable  # Use the stable channel for Flutter
 
-          # Cache Dart dependencies
-      - name: Cache Dart dependencies
-        id: dart-cache
-        uses: actions/cache@v3
-        with:
-          path: .dart_tool
-          key: dart-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            dart-${{ runner.os }}-
+     
       - name: Clean dependencies
         run: flutter clean
 

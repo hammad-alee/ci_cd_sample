@@ -1,66 +1,43 @@
-name: Dart
+name: Flutter CI/CD
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
-      # Cache Flutter SDK
-      - name: Cache Flutter SDK
-        id: flutter-cache
-        uses: actions/cache@v3
-        with:
-          path: /opt/hostedtoolcache/flutter
-          key: flutter-${{ runner.os }}-stable-${{ hashFiles('**/pubspec.lock') }}
-          restore-keys: |
-            flutter-${{ runner.os }}-stable-
-
-      # Set up Flutter SDK (only if cache is not found)
+      # 1) Install & cache Flutter SDK automatically
       - name: Set up Flutter
-        if: steps.flutter-cache.outputs.cache-hit != 'true'
         uses: subosito/flutter-action@v2
         with:
-          channel: stable  # Use the stable channel for Flutter
+          channel: stable
+          cache: true  # Enable the built-in SDK caching
 
-      # Add Flutter to PATH (required for cached Flutter SDK)
-      - name: Add Flutter to PATH
-        run: |
-          echo "$FLUTTER_HOME/bin" >> $GITHUB_PATH
-          echo "$FLUTTER_HOME/bin/cache/dart-sdk/bin" >> $GITHUB_PATH
-        env:
-          FLUTTER_HOME: /opt/hostedtoolcache/flutter
-
-      # Cache Dart dependencies
-      - name: Cache Dart dependencies
-        id: dart-cache
+      # 2) Cache Dart/Flutter packages (Choose your preferred path)
+      - name: Cache pub dependencies
         uses: actions/cache@v3
         with:
-          path: .dart_tool
-          key: dart-${{ runner.os }}-${{ hashFiles('**/pubspec.lock') }}
+          path: |
+            .dart_tool
+            # Or ~/.pub-cache on Linux:
+            # $HOME/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('pubspec.lock') }}
           restore-keys: |
-            dart-${{ runner.os }}-
+            ${{ runner.os }}-pub-
 
-      - name: Clean dependencies
-        run: flutter clean
-
-      - name: Install dependencies
+      # 3) Install dependencies
+      - name: Get dependencies
         run: flutter pub get
-        
-      - name: Build Android APK
+
+      # 4) Run your build, tests, analysis, etc.
+      - name: Build APK
         run: flutter build apk 
 
-      # Uncomment this step to verify the use of 'dart format' on each commit.
-      # - name: Verify formatting
-      #   run: dart format --output=none --set-exit-if-changed .
-
-      # Consider passing '--fatal-infos' for slightly stricter analysis.
-      - name: Analyze project source
+      - name: Analyze code
         run: flutter analyze

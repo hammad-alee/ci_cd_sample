@@ -1,4 +1,4 @@
-# ci_cd_sample
+# Flutter CD/CD with Github Actions
 
 A new Flutter project.
 

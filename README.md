@@ -1,6 +1,6 @@
 # Flutter CD/CD with Github Actions
 
-A new Flutter project.
+A new Flutter project for testing ci/cd.
 
 ## Getting Started
 

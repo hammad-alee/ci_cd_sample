@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ci_cd_sample.iml" filepath="$PROJECT_DIR$/ci_cd_sample.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/ci_cd_sample_android.iml" filepath="$PROJECT_DIR$/android/ci_cd_sample_android.iml" />
     </modules>
   </component>
 </project>

@@ -70,7 +70,7 @@ jobs:
               "title": "🚀 Flutter CI/CD Build Completed✔",
               "sections": [{
                 "activityTitle": "**APK Build Successful**",
-                "text": "The APK has been built and uploaded as an artifact.  \n  Commit Message: '"$COMMIT_MESSAGE"'"
+                "text": "The APK has been built and uploaded as an artifact.  \n\n  **Commit Message:** *'"$COMMIT_MESSAGE"'* "
               }],
               "potentialAction": [{
                 "@type": "OpenUri",

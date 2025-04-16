@@ -64,11 +64,11 @@ jobs:
               "title": "🚀 Flutter CI/CD Build Completed✔",
               "sections": [{
                 "activityTitle": "**APK Build Successful**",
-                "text": "The APK has been built and uploaded as an artifact."
+                "text": "The APK has been built and uploaded as an artifact.  \n  -Commit: ${{ steps.commit.outputs.message }}"
               }],
               "potentialAction": [{
                 "@type": "OpenUri",
-                "name": "🔗 View Build & Download APK",
+                "name": "📥 View Build & Download APK",
                 "targets": [
                   { "os": "default", "uri": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" }
                 ]

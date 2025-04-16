@@ -2,7 +2,7 @@ name: Flutter CI/CD
 
 on:
   push:
-    branches: ["main"]
+    branches: [ "main" ]
 #  pull_request:
 #    branches: ["main"]
 
@@ -35,11 +35,16 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      - name: Decode and create .env_prod
+        run: |
+          mkdir -p env
+          echo "${{ secrets.ENV_PROD_B64 }}" | base64 --decode > env/.env_prod
+
       # 4) Run your build, tests, analysis, etc.
       - name: Build APK
-        run: flutter build apk 
+        run: flutter build apk
 
-       # Upload APK as artifact
+      # Upload APK as artifact
       - name: Upload APK as artifact
         uses: actions/upload-artifact@v4
         with:

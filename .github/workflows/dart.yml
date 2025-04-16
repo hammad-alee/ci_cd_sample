@@ -51,19 +51,27 @@ jobs:
           name: app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
-
-      - name: Send message to Microsoft Teams
+      # Notify in Microsoft Teams
+      - name: Send message to Microsoft Teams with link to Actions
         run: |
           curl -H 'Content-Type: application/json' \
             -d '{
               "@type": "MessageCard",
               "@context": "https://schema.org/extensions",
-              "summary": "Flutter CI/CD",
               "themeColor": "0076D7",
+              "summary": "Flutter CI/CD",
               "title": "🚀 Flutter CI/CD Build Completed",
               "sections": [{
-                "activityTitle": "**APK Uploaded Successfully**",
-                "text": "You can download the artifact from the GitHub Actions run.\n\nBranch: `${{ github.ref_name }}`\nCommit: `${{ github.sha }}`"
+                "activityTitle": "**APK Build Successful**",
+                "text": "The APK has been built and uploaded as an artifact."
+              }],
+              "potentialAction": [{
+                "@type": "OpenUri",
+                "name": "🔗 View Build & Download APK",
+                "targets": [
+                  { "os": "default", "uri": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" }
+                ]
               }]
             }' \
             ${{ secrets.TEAMS_WEBHOOK_URL }}
+      

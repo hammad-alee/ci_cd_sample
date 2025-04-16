@@ -52,6 +52,12 @@ jobs:
           name: app-release.apk
           path: build/app/outputs/flutter-apk/app-release.apk
 
+      # ✔)  Get Last Commit Message
+      - name: Get last commit message
+        id: commit
+        run: |
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+
       # ✔)  Notify in Microsoft Teams
       - name: Send message to Microsoft Teams with link to Actions
         run: |
@@ -64,7 +70,7 @@ jobs:
               "title": "🚀 Flutter CI/CD Build Completed✔",
               "sections": [{
                 "activityTitle": "**APK Build Successful**",
-                "text": "The APK has been built and uploaded as an artifact.  \n  -Commit: ${{ steps.commit.outputs.message }}"
+                "text": "The APK has been built and uploaded as an artifact.  \n  Commit Message: '"$COMMIT_MESSAGE"'"
               }],
               "potentialAction": [{
                 "@type": "OpenUri",
